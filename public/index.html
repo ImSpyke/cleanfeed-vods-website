@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpykeVOD</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Calibri;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: black;
+            color: #333;
+        }
+        .banner {
+            background-color: #282c36;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid #444;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-gap: 10px;
+            padding: 10px;
+        }
+        .grid-item {
+            background-color: #1F2329;
+            padding: 15px;
+            border-radius: 8px;
+            color: #CCCCCC;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .image-container {
+            position: relative;
+            height: 150px;
+        }
+        .image-container img, .image-container .overlay {
+            border-radius: 7px;
+        }
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            cursor: pointer;
+        }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.5rem;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
+            pointer-events: none;
+        }
+        .image-container .img:hover {
+        }
+
+
+        .image-container:hover .overlay {
+            opacity: 1;
+        }
+        .grid-item .title {
+            margin: 0;
+            padding: 10px 0;
+            font-size: 1.2rem;
+        }
+        .grid-item .description {
+            margin: 0;
+            padding: 0px 0;
+            font-size: 1rem;
+        }
+        .filter {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            color: #CCC;
+            margin: 10px;
+            padding: 10px;
+            background-color: #1F2329;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .filter-item {
+            margin: 10px;
+        }
+        .filter-item label {
+            margin-right: 5px;
+            font-weight: bold;
+        }
+        .filter-item select {
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <h1>Cleanfeed VODs</h1>
+    </div>
+    <div class="filter">
+        <div class="filter-item">
+            <label for="game">Game:</label>
+            <select id="game">
+                <option value="">All</option>
+            </select>
+        </div>
+        <div class="filter-item">
+            <label for="map">Map:</label>
+            <select id="map">
+                <option value="">All</option>
+            </select>
+        </div>
+        <div class="filter-item">
+            <label for="rank">Rank:</label>
+            <select id="rank">
+                <option value="">All</option>
+            </select>
+        </div>
+    </div>
+    <div class="grid-container">
+        <div class="grid-item">
+            <div class="image-container">
+                <img src="https://i1.ytimg.com/vi/5ORUb88vpSo/maxresdefault.jpg" alt="VOD Thumbnail">
+                <div class="overlay">Open VOD</div>
+            </div>
+            <h2 class="title">001 - Valorant</h2>
+            <p class="description">This is a description of the first VOD.</p>
+        </div>
+        <div class="grid-item">
+            <div class="image-container">
+                <img src="https://i1.ytimg.com/vi/5ORUb88vpSo/maxresdefault.jpg" alt="VOD Thumbnail">
+                <div class="overlay">Open VOD</div>
+            </div>
+            <h2 class="title">002 - Valorant</h2>
+            <p class="description">This is a description of the second VOD.</p>
+        </div>
+        <div class="grid-item">
+            <div class="image-container">
+                <img src="https://i1.ytimg.com/vi/5ORUb88vpSo/maxresdefault.jpg" alt="VOD Thumbnail">
+                <div class="overlay">Open VOD</div>
+            </div>
+            <h2 class="title">001 - League Of Legends</h2>
+            <p class="description">This is a description of the third VOD.</p>
+        </div>
+    </div>
+    <script>
+        const gridContainer = document.querySelector('.grid-container');
+        const filter = document.querySelector('.filter');
+        const gameSelect = document.querySelector('#game');
+        const mapSelect = document.querySelector('#map');
+        const rankSelect = document.querySelector('#rank');
+        const watchButtons = document.querySelectorAll('.watch-button');
+        
+        fetch('/api/vods')
+            .then(response => response.json())
+            .then(vods => {
+                vods.forEach(vod => {
+                    const gridItem = document.createElement('div');
+                    gridItem.classList.add('grid-item');
+
+                    const imageContainer = document.createElement('div');
+                    imageContainer.classList.add('image-container');
+
+                    const thumbnail = document.createElement('img');
+                    thumbnail.src = vod.thumbnailUrl;
+
+                    const overlay = document.createElement('div');
+                    overlay.classList.add('overlay');
+                    overlay.textContent = 'Open VOD';
+
+                    imageContainer.appendChild(thumbnail);
+                    imageContainer.appendChild(overlay);
+
+                    const title = document.createElement('h2');
+                    title.textContent = vod.title;
+
+                    const description = document.createElement('p');
+                    description.textContent = vod.description;
+
+                    const watchButton = document.createElement('button');
+                    watchButton.classList.add('watch-button');
+                    watchButton.textContent = 'Watch the VOD';
+                    watchButton.addEventListener('click', () => {
+                        window.location.href = vod.youtubeUrl;
+                    });
+
+                    gridItem.appendChild(imageContainer);
+                    gridItem.appendChild(title);
+                    gridItem.appendChild(description);
+                    gridItem.appendChild(watchButton);
+
+                    gridContainer.appendChild(gridItem);
+
+                    const gameOption = document.createElement('option');
+                    gameOption.value = vod.game;
+                    gameOption.textContent = vod.game;
+                    gameSelect.appendChild(gameOption);
+
+                    vod.ranks.forEach(rank => {
+                        const rankOption = document.createElement('option');
+                        rankOption.value = rank;
+                        rankOption.textContent = rank;
+                        rankSelect.appendChild(rankOption);
+                    });
+
+                    const mapOption = document.createElement('option');
+                    mapOption.value = vod.map;
+                    mapOption.textContent = vod.map;
+                    mapSelect.appendChild(mapOption);
+                });
+
+                filter.addEventListener('change', () => {
+                    const filteredVods = vods.filter(vod => {
+                        const gameSelected = gameSelect.value === '' || vod.game === gameSelect.value;
+                        const mapSelected = mapSelect.value === '' || vod.map === mapSelect.value;
+                        const rankSelected = rankSelect.value === '' || vod.ranks.includes(rankSelect.value);
+                        return gameSelected && mapSelected && rankSelected;
+                    });
+
+                    gridContainer.innerHTML = '';
+                    filteredVods.forEach(vod => {
+                        const gridItem = document.createElement('div');
+                        gridItem.classList.add('grid-item');
+
+                        const imageContainer = document.createElement('div');
+                        imageContainer.classList.add('image-container');
+
+                        const thumbnail = document.createElement('img');
+                        thumbnail.src = vod.thumbnailUrl;
+
+                        const overlay = document.createElement('div');
+                        overlay.classList.add('overlay');
+                        overlay.textContent = 'Open VOD';
+
+                        imageContainer.appendChild(thumbnail);
+                        imageContainer.appendChild(overlay);
+
+                        const title = document.createElement('h2');
+                        title.textContent = vod.title;
+
+                        const description = document.createElement('p');
+                        description.textContent = vod.description;
+
+                        const watchButton = document.createElement('button');
+                        watchButton.classList.add('watch-button');
+                        watchButton.textContent = 'Watch the VOD';
+                        watchButton.addEventListener('click', () => {
+                            window.location.href = vod.youtubeUrl;
+                        });
+
+                        gridItem.appendChild(imageContainer);
+                        gridItem.appendChild(title);
+                        gridItem.appendChild(description);
+                        gridItem.appendChild(watchButton);
+
+                        gridContainer.appendChild(gridItem);
+                    });
+                });
+            });
+            
+        
+    </script>
+</body>
+</html>
+

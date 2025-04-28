@@ -1,0 +1,30 @@
+{
+  "name": "cleanfeed-vods-website",
+  "version": "1.0.0",
+  "description": "A website to display all the Cleanfeed VODs i do.",
+  "homepage": "https://github.com/ImSpyke/cleanfeed-vods-website#readme",
+  "bugs": {
+    "url": "https://github.com/ImSpyke/cleanfeed-vods-website/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ImSpyke/cleanfeed-vods-website.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "npm run build && node ./dist/index.js",
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "http": "^0.0.1-security"
+  }
+}
