@@ -10,6 +10,13 @@ import path from 'path';
 
 import CONFIG from './config.js'
 
+import dotenv from 'dotenv'
+dotenv.config()
+
+// If not .env file exists, throw error
+if (!fs.existsSync(path.resolve(__dirname, '../.env'))) {
+    throw new Error('No .env file found')
+}
 
 import { sha1 } from 'js-sha1';
 import fs from 'fs';
