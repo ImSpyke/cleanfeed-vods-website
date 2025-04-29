@@ -28,6 +28,19 @@
             align-items: center;
             justify-content: center;
             border-bottom: 1px solid #444;
+            position: relative;
+        }
+        .banner a {
+            color: #ec3b3b;
+            text-decoration: none;
+            font-weight: bold;
+            margin-left: 10px;
+            transition: color 0.1s ease;
+            text-decoration: underline;
+        }
+        .banner a:hover {
+            color: #ff8c00;
+            text-decoration: none;
         }
         .grid-container {
             display: grid;
@@ -75,8 +88,6 @@
             transition: opacity 0.2s ease-in-out;
             pointer-events: none;
         }
-
-
         .image-container:hover .overlay {
             opacity: 1;
         }
@@ -114,24 +125,20 @@
             border-radius: 5px;
             border: 1px solid #ccc;
         }
-
-
         .grid-item.data-game-valorant {
-            /* Red-ish background color, but still dark to match Disign */
+            /* Red-ish background color, but still dark to match Design */
         }
         .grid-item.data-game-valorant .title span.game {
             color: #ec3b3b;
         }
-
         .grid-item.data-game-overwatch {
-            /* Orange-ish background color, but still dark to match Disign */
+            /* Orange-ish background color, but still dark to match Design */
         }
         .grid-item.data-game-overwatch .title span.game {
             color: #ff8c00;
         }
-        
         .grid-item.data-game-leagueoflegends {
-            /* Orange-ish background color, but still dark to match Disign */
+            /* Orange-ish background color, but still dark to match Design */
         }
         .grid-item.data-game-leagueoflegends .title span.game {
             color: #61ec3b;
@@ -141,6 +148,7 @@
 <body>
     <div class="banner">
         <h1>Cleanfeed VODs</h1>
+        <a href="https://www.twitch.tv/imthespyke" target="_blank">twitch.tv/imthespyke</a>
     </div>
     <div class="filter">
         <div class="filter-item">
@@ -163,7 +171,6 @@
         </div>
     </div>
     <div class="grid-container">
-        
         <!--
         <div class="grid-item data-game-valorant">
             <div class="image-container">
@@ -226,8 +233,10 @@
 
                     const gridItem = generateHtmlElement(`
                         <div class="image-container">
-                            <img src="${vod.thumbnailUrl}" alt="VOD Thumbnail">
-                            <div class="overlay">Open VOD</div>
+                            <a href="${vod.url}" target="_blank" class="watch-button">
+                                <img src="${vod.thumbnailUrl}" alt="VOD Thumbnail">
+                                <div class="overlay">Open VOD</div>
+                            </a>
                         </div>
                         <h2 class="title"><span class="number">${vod.number}</span> - <span class="game">${capitalize(vod.game)}</span>${vod.title.trim().length != 0 ? ` - ${vod.title}` : ''}</h2>
                         <p class="description">Map: ${vod.map} - Ranks: ${vod.ranks.join(', ')} - ${vod.description}</p>
@@ -236,6 +245,9 @@
                     gridItem.setAttribute('data-game', vod.hash);
                     
                     console.log("Grid Item:", gridItem);
+
+                    // When click on the image, open the video
+
                     
                     if(vod.game === "valorant") {
                         gridItem.classList.add('data-game-valorant');
