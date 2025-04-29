@@ -1,0 +1,57 @@
+[
+  {
+    "title": "VOD 000",
+    "number": "000",
+    "description": "VOD Description",
+    "game": "valorant",
+    "map": "Multiple maps",
+    "ranks": [
+      "any rank"
+    ],
+    "thumbnailUrl": "https://static-cdn.jtvnw.net/cf_vods/d2nvs31859zcd8/2ab35ec07a051c7f3013_imthespyke_320190274172_1745700848/thumb/custom-9ad4fe18-f83a-4db4-a26b-f07b30b62260-320x180.jpeg",
+    "url": "https://www.twitch.tv/videos/2443489183",
+    "hash": "8d6040973accaf186c69cbc802025be1c721913f"
+  },
+  {
+    "title": "VOD 001",
+    "number": "001",
+    "description": "VOD Description",
+    "game": "valorant",
+    "map": "Ascent",
+    "ranks": [
+      "gold",
+      "immortal"
+    ],
+    "thumbnailUrl": "https://static-cdn.jtvnw.net/cf_vods/dgeft87wbj63p/049a4a46cd4ec334fc3e_imthespyke_319414841337_1745838560//thumb/thumb0-320x180.jpg",
+    "url": "https://www.twitch.tv/videos/2444842149",
+    "hash": "96b678252f45bc7ee9644728fb3645f9edfcb2de"
+  },
+  {
+    "title": "VOD 002",
+    "number": "002",
+    "description": "VOD Description",
+    "game": "valorant",
+    "map": "Ascent",
+    "ranks": [
+      "platinum",
+      "immortal"
+    ],
+    "thumbnailUrl": "https://static-cdn.jtvnw.net/cf_vods/dgeft87wbj63p/18dadc3f3d83a1862de2_imthespyke_319417308793_1745842453//thumb/thumb0-320x180.jpg",
+    "url": "https://www.twitch.tv/videos/2444868962",
+    "hash": "86663163c5eb82b705388f4f8099c595ca31697c"
+  },
+  {
+    "title": "VOD 003",
+    "number": "003",
+    "description": "VOD Description",
+    "game": "valorant",
+    "map": "Ascent",
+    "ranks": [
+      "plat",
+      "radiant"
+    ],
+    "thumbnailUrl": "https://static-cdn.jtvnw.net/cf_vods/d1m7jfoe9zdc1j/046a35a9da0daa25346c_imthespyke_322497129085_1745867852//thumb/thumb0-320x180.jpg",
+    "url": "https://www.twitch.tv/videos/2445134478",
+    "hash": "d6e74ffe62dc7c64e694eba3e16be50ea6ce3e46"
+  }
+]

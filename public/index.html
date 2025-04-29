@@ -31,7 +31,7 @@
         }
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
             grid-gap: 10px;
             padding: 10px;
         }
@@ -43,25 +43,27 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             position: relative;
         }
+        .grid-item.hidden {
+            display: none;
+        }
         .image-container {
             position: relative;
-            height: 150px;
         }
         .image-container img, .image-container .overlay {
             border-radius: 7px;
         }
         .image-container img {
+            aspect-ratio: 16/9;
             width: 100%;
-            height: 100%;
             object-fit: cover;
             cursor: pointer;
         }
         .overlay {
+            aspect-ratio: 16/9;
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
             background-color: rgba(0, 0, 0, 0.5);
             display: flex;
             align-items: center;
@@ -72,8 +74,6 @@
             opacity: 0;
             transition: opacity 0.2s ease-in-out;
             pointer-events: none;
-        }
-        .image-container .img:hover {
         }
 
 
@@ -114,6 +114,28 @@
             border-radius: 5px;
             border: 1px solid #ccc;
         }
+
+
+        .grid-item.data-game-valorant {
+            /* Red-ish background color, but still dark to match Disign */
+        }
+        .grid-item.data-game-valorant .title span.game {
+            color: #ec3b3b;
+        }
+
+        .grid-item.data-game-overwatch {
+            /* Orange-ish background color, but still dark to match Disign */
+        }
+        .grid-item.data-game-overwatch .title span.game {
+            color: #ff8c00;
+        }
+        
+        .grid-item.data-game-leagueoflegends {
+            /* Orange-ish background color, but still dark to match Disign */
+        }
+        .grid-item.data-game-leagueoflegends .title span.game {
+            color: #61ec3b;
+        }
     </style>
 </head>
 <body>
@@ -141,31 +163,36 @@
         </div>
     </div>
     <div class="grid-container">
-        <div class="grid-item">
+        
+        <!--
+        <div class="grid-item data-game-valorant">
             <div class="image-container">
                 <img src="https://i1.ytimg.com/vi/5ORUb88vpSo/maxresdefault.jpg" alt="VOD Thumbnail">
                 <div class="overlay">Open VOD</div>
             </div>
-            <h2 class="title">001 - Valorant</h2>
-            <p class="description">This is a description of the first VOD.</p>
+            <h2 class="title"><span class="number">001</span> - <span class="game">Valorant</span></h2>
+            <p class="description">Platinum - Immortal</p>
         </div>
-        <div class="grid-item">
+        <div class="grid-item data-game-valorant">
             <div class="image-container">
                 <img src="https://i1.ytimg.com/vi/5ORUb88vpSo/maxresdefault.jpg" alt="VOD Thumbnail">
                 <div class="overlay">Open VOD</div>
             </div>
-            <h2 class="title">002 - Valorant</h2>
-            <p class="description">This is a description of the second VOD.</p>
+            <h2 class="title"><span class="number">002</span> - <span class="game">Valorant</span></h2>
+            <p class="description">Gold - Immortal</p>
         </div>
-        <div class="grid-item">
+        <div class="grid-item data-game-leagueoflegends">
             <div class="image-container">
                 <img src="https://i1.ytimg.com/vi/5ORUb88vpSo/maxresdefault.jpg" alt="VOD Thumbnail">
                 <div class="overlay">Open VOD</div>
             </div>
-            <h2 class="title">001 - League Of Legends</h2>
-            <p class="description">This is a description of the third VOD.</p>
+            <h2 class="title"><span class="number">001</span> - <span class="game">League Of Legends</span></h2>
+            <p class="description">Grandmasters</p>
         </div>
+        -->
     </div>
+
+    <script src="/assets/SHA1.js"></script>
     <script>
         const gridContainer = document.querySelector('.grid-container');
         const filter = document.querySelector('.filter');
@@ -174,63 +201,74 @@
         const rankSelect = document.querySelector('#rank');
         const watchButtons = document.querySelectorAll('.watch-button');
         
+        function capitalize(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+        }
+
         fetch('/api/vods')
             .then(response => response.json())
             .then(vods => {
                 vods.forEach(vod => {
-                    const gridItem = document.createElement('div');
+                    /*
+                    vod = {
+                        "title": "VOD Title",
+                        "description": "VOD Description",
+                        "game": "game",
+                        "map": "map",
+                        "ranks": ["rank1", "rank2"],
+                        "thumbnailUrl": "https://i1.ytimg.com/vi/5ORUb88vpSo/maxresdefault.jpg",
+                        "url": "https://www.youtube.com/watch?v=5ORUb88vpSo"
+                    }
+                    */
+
+                    console.log("VOD:", vod);
+
+
+                    const gridItem = generateHtmlElement(`
+                        <div class="image-container">
+                            <img src="${vod.thumbnailUrl}" alt="VOD Thumbnail">
+                            <div class="overlay">Open VOD</div>
+                        </div>
+                        <h2 class="title"><span class="number">${vod.number}</span> - <span class="game">${capitalize(vod.game)}</span>${vod.title.trim().length != 0 ? ` - ${vod.title}` : ''}</h2>
+                        <p class="description">Map: ${vod.map} - Ranks: ${vod.ranks.join(', ')} - ${vod.description}</p>
+                    `);
                     gridItem.classList.add('grid-item');
-
-                    const imageContainer = document.createElement('div');
-                    imageContainer.classList.add('image-container');
-
-                    const thumbnail = document.createElement('img');
-                    thumbnail.src = vod.thumbnailUrl;
-
-                    const overlay = document.createElement('div');
-                    overlay.classList.add('overlay');
-                    overlay.textContent = 'Open VOD';
-
-                    imageContainer.appendChild(thumbnail);
-                    imageContainer.appendChild(overlay);
-
-                    const title = document.createElement('h2');
-                    title.textContent = vod.title;
-
-                    const description = document.createElement('p');
-                    description.textContent = vod.description;
-
-                    const watchButton = document.createElement('button');
-                    watchButton.classList.add('watch-button');
-                    watchButton.textContent = 'Watch the VOD';
-                    watchButton.addEventListener('click', () => {
-                        window.location.href = vod.youtubeUrl;
-                    });
-
-                    gridItem.appendChild(imageContainer);
-                    gridItem.appendChild(title);
-                    gridItem.appendChild(description);
-                    gridItem.appendChild(watchButton);
+                    gridItem.setAttribute('data-game', vod.hash);
+                    
+                    console.log("Grid Item:", gridItem);
+                    
+                    if(vod.game === "valorant") {
+                        gridItem.classList.add('data-game-valorant');
+                    } else if(vod.game === "leagueoflegends") {
+                        gridItem.classList.add('data-game-leagueoflegends');
+                    } else if(vod.game === "overwatch") {
+                        gridItem.classList.add('data-game-overwatch');
+                    }
 
                     gridContainer.appendChild(gridItem);
 
-                    const gameOption = document.createElement('option');
-                    gameOption.value = vod.game;
-                    gameOption.textContent = vod.game;
-                    gameSelect.appendChild(gameOption);
+                    if (!Array.from(gameSelect.options).some(option => option.value.toLowerCase() === vod.game.toLowerCase())) {
+                        const gameOption = generateHtmlElement(`<option value="${vod.game}">${vod.game}</option>`);
+                        gameSelect.appendChild(gameOption);
+                    }
 
                     vod.ranks.forEach(rank => {
-                        const rankOption = document.createElement('option');
-                        rankOption.value = rank;
-                        rankOption.textContent = rank;
-                        rankSelect.appendChild(rankOption);
+                        if (!Array.from(rankSelect.options).some(option => option.value.toLowerCase() === rank.toLowerCase())) {
+                            const rankOption = generateHtmlElement(`<option value="${rank}">${rank}</option>`);
+                            rankSelect.appendChild(rankOption);
+                        }
                     });
-
-                    const mapOption = document.createElement('option');
-                    mapOption.value = vod.map;
-                    mapOption.textContent = vod.map;
-                    mapSelect.appendChild(mapOption);
+                    if (!Array.from(mapSelect.options).some(option => option.value.toLowerCase() === vod.map.toLowerCase())) {
+                        const mapOption = generateHtmlElement(`<option value="${vod.map}">${vod.map}</option>`);
+                        mapSelect.appendChild(mapOption);
+                    }
                 });
+
+                function generateHtmlElement(html) {
+                    const element = document.createElement('div');
+                    element.innerHTML = html;
+                    return element;
+                };
 
                 filter.addEventListener('change', () => {
                     const filteredVods = vods.filter(vod => {
@@ -240,44 +278,15 @@
                         return gameSelected && mapSelected && rankSelected;
                     });
 
-                    gridContainer.innerHTML = '';
-                    filteredVods.forEach(vod => {
-                        const gridItem = document.createElement('div');
-                        gridItem.classList.add('grid-item');
-
-                        const imageContainer = document.createElement('div');
-                        imageContainer.classList.add('image-container');
-
-                        const thumbnail = document.createElement('img');
-                        thumbnail.src = vod.thumbnailUrl;
-
-                        const overlay = document.createElement('div');
-                        overlay.classList.add('overlay');
-                        overlay.textContent = 'Open VOD';
-
-                        imageContainer.appendChild(thumbnail);
-                        imageContainer.appendChild(overlay);
-
-                        const title = document.createElement('h2');
-                        title.textContent = vod.title;
-
-                        const description = document.createElement('p');
-                        description.textContent = vod.description;
-
-                        const watchButton = document.createElement('button');
-                        watchButton.classList.add('watch-button');
-                        watchButton.textContent = 'Watch the VOD';
-                        watchButton.addEventListener('click', () => {
-                            window.location.href = vod.youtubeUrl;
-                        });
-
-                        gridItem.appendChild(imageContainer);
-                        gridItem.appendChild(title);
-                        gridItem.appendChild(description);
-                        gridItem.appendChild(watchButton);
-
-                        gridContainer.appendChild(gridItem);
+                    // For each, based on the hash, if its not in filteredVods, add hidden class
+                    gridContainer.querySelectorAll('.grid-item').forEach(gridItem => {
+                        if (!filteredVods.some(vod => vod.hash === gridItem.getAttribute('data-game'))) {
+                            gridItem.classList.add('hidden');
+                        } else {
+                            gridItem.classList.remove('hidden');
+                        }
                     });
+
                 });
             });
             

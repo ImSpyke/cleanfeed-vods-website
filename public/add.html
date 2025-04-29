@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add VOD</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Calibri;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: black;
+            color: #333;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        form {
+            background-color: #1F2329;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #CCC;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="password"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #282c36;
+            color: #fff;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #ec3b3b;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #c32f2f;
+        }
+    </style>
+</head>
+<body>
+    <form action="/api/add" method="POST">
+        <label for="password">Password: <span class="hint">(Required)</span></label>
+        <input type="password" name="password" id="password" required><br>
+        
+        <label for="title">Title: <span class="hint">(Required)</span></label>
+        <input type="text" name="title" id="title" required><br>
+        <label for="number">Number: <span class="hint">(Required)</span></label>
+        <input type="number" name="number" id="number" required><br>
+        <label for="description">Description: <span class="hint">(Required)</span></label>
+        <textarea name="description" id="description" cols="30" rows="10" required></textarea><br>
+        <label for="game">Game: <span class="hint">(Required)</span></label>
+        <select name="game" id="game" required>
+            <option value="valorant">Valorant</option>
+            <option value="overwatch">Overwatch</option>
+            <option value="leagueoflegends">League Of Legends</option>
+        </select><br>
+        <label for="map">Map:</label>
+        <input type="text" name="map" id="map"><br>
+        <label for="ranks">Ranks: <span class="hint">(Required)</span></label>
+        <input type="text" name="ranks" id="ranks" required><br>
+        <label for="thumbnailUrl">Thumbnail URL: <span class="hint">(Required)</span></label>
+        <input type="text" name="thumbnailUrl" id="thumbnailUrl" required><br>
+        <label for="url">URL: <span class="hint">(Required)</span></label>
+        <input type="text" name="url" id="url" required><br>
+        <button type="submit">Send</button>
+    </form>
+
+<script>
+    const form = document.querySelector('form');
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        const formData = new FormData(form);
+        const data = {};
+        formData.forEach((value, key) => {
+            if (key === 'ranks') {
+                data[key] = value.split(',').map(x => x.trim());
+            } else {
+                data[key] = value;
+            }
+        });
+        
+
+        fetch('/api/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Check if 200
+            if (data.status !== 200) {
+                alert(`Failed to add VOD: ${data.message}`);
+                return;
+            }
+
+            alert('VOD added successfully');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert(`Failed to add VOD: ${error.message}`);
+        });
+    });
+</script>
+
+</body>
+</html>
