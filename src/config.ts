@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 dotenv.config()
 export default {
-    "port": 8080,
+    "port": 3000,
     "admin_password": process.env.ADMIN_PASSWORD
 }

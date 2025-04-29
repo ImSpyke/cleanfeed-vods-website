@@ -7,6 +7,9 @@ app.use(express.json())
 import { fileURLToPath } from 'url';
 import path from 'path';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 
 import CONFIG from './config.js'
 
@@ -22,9 +25,6 @@ import { sha1 } from 'js-sha1';
 import fs from 'fs';
 // Add declaration for sha1
 
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const SITE_ROOT = path.resolve(__dirname, '../public/')
 
