@@ -6,7 +6,7 @@
     "game": "valorant",
     "map": "Multiple maps",
     "ranks": [
-      "any rank"
+      "multiple ranks"
     ],
     "thumbnailUrl": "https://static-cdn.jtvnw.net/cf_vods/d2nvs31859zcd8/2ab35ec07a051c7f3013_imthespyke_320190274172_1745700848/thumb/custom-9ad4fe18-f83a-4db4-a26b-f07b30b62260-320x180.jpeg",
     "url": "https://www.twitch.tv/videos/2443489183",
@@ -31,7 +31,7 @@
     "number": "002",
     "description": "VOD Description",
     "game": "valorant",
-    "map": "Ascent",
+    "map": "Haven",
     "ranks": [
       "platinum",
       "immortal"
@@ -45,9 +45,9 @@
     "number": "003",
     "description": "VOD Description",
     "game": "valorant",
-    "map": "Ascent",
+    "map": "Lotus",
     "ranks": [
-      "plat",
+      "platinum",
       "radiant"
     ],
     "thumbnailUrl": "https://static-cdn.jtvnw.net/cf_vods/d1m7jfoe9zdc1j/046a35a9da0daa25346c_imthespyke_322497129085_1745867852//thumb/thumb0-320x180.jpg",
